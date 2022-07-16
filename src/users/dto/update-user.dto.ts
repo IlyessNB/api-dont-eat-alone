@@ -6,31 +6,35 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class RegisterDto {
+export class UpdateUserDto {
   @IsString()
   @IsNotEmpty()
-  readonly firstName: string;
+  @IsOptional()
+  readonly firstName?: string;
 
   @IsString()
   @IsNotEmpty()
-  readonly lastName: string;
+  @IsOptional()
+  readonly lastName?: string;
 
   @IsEmail()
   @IsNotEmpty()
-  readonly email: string;
+  @IsOptional()
+  readonly email?: string;
 
   @IsString()
   @IsNotEmpty()
   @MinLength(8)
-  readonly password: string;
+  @IsOptional()
+  readonly password?: string;
 
   @IsString()
   @IsNotEmpty()
-  readonly description: string;
+  @IsOptional()
+  readonly description?: string;
 
   @IsString()
+  @IsNotEmpty()
   @IsOptional()
   readonly profilePicture?: string;
 }
-
-export default RegisterDto;
