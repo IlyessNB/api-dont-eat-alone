@@ -6,6 +6,8 @@ import { AuthModule } from './auth/auth.module';
 import { RestaurantsModule } from './restaurants/restaurants.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_FILTER } from '@nestjs/core';
+import { ExceptionsLoggerFilter } from './exceptions-logger-filter';
 
 @Module({
   imports: [
@@ -29,6 +31,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     RestaurantsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: ExceptionsLoggerFilter,
+    },
+  ],
 })
 export class AppModule {}
