@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { RestaurantsModule } from './restaurants/restaurants.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
@@ -28,7 +27,6 @@ import { ExceptionsLoggerFilter } from './exceptions-logger-filter';
     ConfigModule.forRoot(),
     UsersModule,
     AuthModule,
-    RestaurantsModule,
   ],
   controllers: [AppController],
   providers: [
