@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { RestaurantLike } from '../restaurant-like/restaurant-like.entity';
+import { UserLike } from '../user-like/user-like.entity';
 
 @Entity('user')
 export class User {
@@ -22,4 +24,13 @@ export class User {
 
   @Column({ name: 'profile_picture_id', nullable: true })
   profilePicture?: string;
+
+  @OneToMany(() => RestaurantLike, (restaurantLike) => restaurantLike.user)
+  restaurantLiked: RestaurantLike[];
+
+  @OneToMany(() => UserLike, (userLike) => userLike.likedUser)
+  likedUser: UserLike[];
+
+  @OneToMany(() => UserLike, (userLike) => userLike.likingUser)
+  likingUser: UserLike[];
 }

@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
+import { hash } from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserNotFoundByMailException } from './exception/user-not-found-by-mail-exception';
 import { UserNotFoundByIdException } from './exception/user-not-found-by-id-exception';
@@ -26,7 +27,19 @@ export class UsersService {
   }
 
   async updateUser(userId: number, userUpdate: UpdateUserDto) {
-    await this.userRepository.update(userId, userUpdate);
+    const hashedPassword = await hash(userUpdate.password, 5);
+    try {
+      await this.userRepository.update(userId, {
+        ...userUpdate,
+        password: hashedPassword,
+      });
+    } catch (error) {
+      throw new HttpException(
+        'Something went wrong: ' + error,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
     const updatedUser = await this.userRepository.findOne({
       where: { id: userId },
     });

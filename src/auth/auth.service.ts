@@ -15,9 +15,9 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async getAuthenticatedUser(mail: string, plainPassword: string) {
+  async getAuthenticatedUser(email: string, plainPassword: string) {
     try {
-      const user = await this.userService.findByMail(mail);
+      const user = await this.userService.findByMail(email);
       await AuthService.verifyPassword(plainPassword, user.password);
       user.password = undefined;
       return user;

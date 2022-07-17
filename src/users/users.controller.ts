@@ -1,7 +1,18 @@
-import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/jwt-auth-guard';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ValidNumberStringIdParam } from '../utils/ValidNumberStringIdParam';
+import RequestWithUser from '../auth/request-whit-user.interface';
+import { ValidEmailParam } from '../utils/ValidEmailParam';
 
 @Controller('api/users')
 export class UsersController {
@@ -13,21 +24,21 @@ export class UsersController {
   }
 
   @Get('email/:email')
-  async getUserByMail(@Param('email') email) {
+  async getUserByMail(@Param() { email }: ValidEmailParam) {
     return this.usersService.findByMail(email);
   }
 
-  @Get('id/:userId')
-  async getUserById(@Param('userId') userId) {
-    return this.usersService.findByUserId(userId);
+  @Get('id/:id')
+  async getUserById(@Param() { id }: ValidNumberStringIdParam) {
+    return this.usersService.findByUserId(Number(id));
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch(':userId')
+  @Patch()
   async updateUser(
-    @Param('userId') userId: number,
+    @Req() request: RequestWithUser,
     @Body() userUpdate: UpdateUserDto,
   ) {
-    return this.usersService.updateUser(userId, userUpdate);
+    return this.usersService.updateUser(request.user.id, userUpdate);
   }
 }
