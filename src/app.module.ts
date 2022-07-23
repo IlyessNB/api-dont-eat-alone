@@ -9,6 +9,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { ExceptionsLoggerFilter } from './exceptions-logger-filter';
 import { UserLikeModule } from './user-like/user-like.module';
 import { RestaurantLikeModule } from './restaurant-like/restaurant-like.module';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { RestaurantLikeModule } from './restaurant-like/restaurant-like.module';
     AuthModule,
     UserLikeModule,
     RestaurantLikeModule,
+    MessagesModule,
   ],
   controllers: [AppController],
   providers: [

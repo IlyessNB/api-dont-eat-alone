@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { RestaurantLike } from '../restaurant-like/restaurant-like.entity';
 import { UserLike } from '../user-like/user-like.entity';
+import { Message } from '../messages/message.entity';
 
 @Entity('user')
 export class User {
@@ -33,4 +34,10 @@ export class User {
 
   @OneToMany(() => UserLike, (userLike) => userLike.likingUser)
   likingUser: UserLike[];
+
+  @OneToMany(() => Message, (messageSent) => messageSent.sender)
+  messageSent: Message[];
+
+  @OneToMany(() => Message, (messageReceived) => messageReceived.receiver)
+  messageReceived: Message[];
 }
