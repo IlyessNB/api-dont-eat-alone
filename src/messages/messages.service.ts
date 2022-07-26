@@ -29,10 +29,14 @@ export class MessagesService {
     }
   }
 
-  async findByUserId(userId: number) {
+  async findByUserId(loggedUserId: number, userId: number) {
+    const loggedUser = await this.usersService.findByUserId(loggedUserId);
     const user = await this.usersService.findByUserId(userId);
     const messages = await this.messageRepository.find({
-      where: [{ sender: user }, { receiver: user }],
+      where: [
+        { receiver: user, sender: loggedUser },
+        { receiver: loggedUser, sender: user },
+      ],
       relations: ['sender', 'receiver'],
     });
     if (messages) {

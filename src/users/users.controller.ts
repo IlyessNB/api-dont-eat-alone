@@ -41,4 +41,10 @@ export class UsersController {
   ) {
     return this.usersService.updateUser(request.user.id, userUpdate);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('logged')
+  async getLoggedUser(@Req() request: RequestWithUser) {
+    return request.user;
+  }
 }
