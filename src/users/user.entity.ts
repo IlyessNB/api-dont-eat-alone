@@ -23,8 +23,8 @@ export class User {
   @Column({ name: 'description' })
   description: string;
 
-  @Column({ name: 'profile_picture_id', nullable: true })
-  profilePicture?: string;
+  @Column({ name: 'profile_picture', nullable: true })
+  profilePicture: string;
 
   @OneToMany(() => RestaurantLike, (restaurantLike) => restaurantLike.user)
   restaurantLiked: RestaurantLike[];

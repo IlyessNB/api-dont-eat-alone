@@ -22,7 +22,8 @@ export class UserLikeService {
         ),
         likingUser: await this.usersService.findByUserId(userId),
       });
-      return this.userLikeRepository.save(userLike);
+      await this.userLikeRepository.save(userLike);
+      return this.match(userId, createUserLike.likedUserId);
     } catch (error) {
       throw new BadRequestException(createUserLike, 'User like creation error');
     }
@@ -53,5 +54,19 @@ export class UserLikeService {
       where: { likingUser: user },
       relations: ['likedUser'],
     });
+  }
+
+  async match(userId1: number, userId2) {
+    const user1 = await this.usersService.findByUserId(userId1);
+    const user2 = await this.usersService.findByUserId(userId2);
+    const match = await this.userLikeRepository.find({
+      where: { likingUser: user2, likedUser: user1 },
+      relations: ['likingUser', 'likedUser'],
+    });
+    if (match[0]) {
+      console.log(match[0]);
+      return true;
+    }
+    return false;
   }
 }

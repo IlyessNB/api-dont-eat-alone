@@ -21,7 +21,8 @@ export class UsersService {
       email: userCreate.email,
       password: userCreate.password,
       description: userCreate.description,
-      profilePicture: userCreate.profilePicture || null,
+      profilePicture:
+        userCreate.profilePicture != '' ? userCreate.profilePicture : '',
     });
     return this.userRepository.save(user);
   }
