@@ -23,7 +23,11 @@ export class MessagesService {
           createMessageDto.receiverId,
         ),
       });
-      return this.messageRepository.save(message);
+      const ms = await this.messageRepository.save(message);
+      return await this.messageRepository.findOne({
+        where: { id: ms.id },
+        relations: ['sender', 'receiver'],
+      });
     } catch (error) {
       throw new BadRequestException(createMessageDto, 'Message creation error');
     }

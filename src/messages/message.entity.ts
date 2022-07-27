@@ -26,4 +26,7 @@ export class Message {
   })
   @JoinColumn({ name: 'receiver_id' })
   receiver: User;
+
+  @Column({ name: 'created_date' })
+  createdDate: string;
 }

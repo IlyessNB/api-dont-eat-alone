@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -28,6 +29,14 @@ export class RestaurantLikeController {
       createRestaurantLike,
       request.user.id,
     );
+  }
+
+  @Delete('/:id')
+  async unlikeRestaurant(
+    @Req() request: RequestWithUser,
+    @Param() { id }: ValidStringIdParam,
+  ) {
+    return this.restaurantLikeService.unlikeRestaurant(request.user.id, id);
   }
 
   @Get('/:id')

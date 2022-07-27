@@ -53,4 +53,15 @@ export class RestaurantLikeService {
       where: { user: user },
     });
   }
+
+  async unlikeRestaurant(loggedUserId: number, restaurantId: string) {
+    const user = await this.usersService.findByUserId(loggedUserId);
+    const like = await this.restaurantLikeRepository.findOne({
+      where: { restaurantId: restaurantId, user: user },
+    });
+    if (like) {
+      return await this.restaurantLikeRepository.delete(like.id);
+    }
+    throw new RestaurantLikeNotFoundByIdException(like.id);
+  }
 }

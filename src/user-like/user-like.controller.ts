@@ -40,4 +40,10 @@ export class UserLikeController {
   async findByLikingUserId(@Param() { id }: ValidNumberStringIdParam) {
     return this.userLikeService.findByLikingUserId(Number(id));
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  getUsersDM(@Req() request: RequestWithUser) {
+    return this.userLikeService.getUsersDm(request.user.id);
+  }
 }

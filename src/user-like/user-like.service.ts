@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { UserLike } from './user-like.entity';
 import { UsersService } from '../users/users.service';
 import { UserLikeNotFoundByIdException } from './exception/user-like-not-found-by-id-exception';
+import { User } from '../users/user.entity';
 
 @Injectable()
 export class UserLikeService {
@@ -54,6 +55,19 @@ export class UserLikeService {
       where: { likingUser: user },
       relations: ['likedUser'],
     });
+  }
+
+  async getUsersDm(userId) {
+    const users = await this.usersService.getAll();
+    let match: [User];
+    users.map((user) => {
+      if (user.id != userId) {
+        if (this.match(userId, user)) {
+          match.push(user);
+        }
+      }
+    });
+    return match;
   }
 
   async match(userId1: number, userId2) {
